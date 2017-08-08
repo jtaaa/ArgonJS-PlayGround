@@ -17,35 +17,41 @@ Send a simple GET request to "/colorchange/_{entityId}_/_{Hex Color}_". For exam
  
 Send a POST request to "/sizechange/_{entityId}_" with the dimensions of the object that are to be updated. For example, to make the original cylinder taller and thinner you can send a POST request to "https://chisel-season.glitch.me/sizechange/cylinder" with the following body:
 
-    { 
-      "sizes": {
-        "height": "2",
-        "radius": "0.25"
-      }
-    }
+```JSON
+{
+	"sizes": {
+		"height": "2",
+		"radius": "0.25"
+	}
+}
+```
 
  * Change the position of an entity
  
 Send a POST request to "/positionchange/_{entityId}_" with the new position of the entity as a space separated string of X, Y and Z positional values. For example, to move the original square you can send a POST request to "https://chisel-season.glitch.me/positionchange/square" with the following body:
 
-    {
-      "position": "6 0 3"
-    }
+```JSON
+{
+	"position": "6 0 3"
+}
+```
 
  * Add an entity
  
 Send a POST request to "/addentity" with the entity data that will be used to construct the object. For example, to add a cylinder you can send a POST request to "https://chisel-season.glitch.me/addentitiy" with the following body:
 
-    {
-    	"entityData": {
+```JSON
+{
+	"entityData": {
 		"type": "cylinder",
 		"id": null,
 		"position": "0 3 3",
 		"cursorListener": true,
 		"color": "#EE4496",
 		"sizes": {
-		  "height": "1",
-		  "radius": "1"
+			"height": "1",
+			"radius": "1"
 		}
 	}
-    }
+}
+```
