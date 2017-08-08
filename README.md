@@ -37,15 +37,15 @@ Send a POST request to "/positionchange/_{entityId}_" with the new position of t
 Send a POST request to "/addentity" with the entity data that will be used to construct the object. For example, to add a cylinder you can send a POST request to "https://chisel-season.glitch.me/addentitiy" with the following body:
 
     {
-	    "entityData": {
-        "type": "cylinder",
-        "id": null,
-        "position": "0 3 3",
-        "cursorListener": true,
-        "color": "#EE4496",
-        "sizes": {
-          "height": "1",
-          "radius": "1"
-		    }
-	    }
+    	"entityData": {
+		"type": "cylinder",
+		"id": null,
+		"position": "0 3 3",
+		"cursorListener": true,
+		"color": "#EE4496",
+		"sizes": {
+		  "height": "1",
+		  "radius": "1"
+		}
+	}
     }
