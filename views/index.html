@@ -13,9 +13,9 @@
 
     <script>
       function getRandColor () {
-          var letters = '0123456789ABCDEF'.split('');
-          var color = '#';
-          for (var i = 0; i < 6; i++) {
+          let letters = '0123456789ABCDEF'.split('');
+          let color = '#';
+          for (let i = 0; i < 6; i++) {
               color += letters[Math.floor(Math.random() * 16)];
           }
           return color;
@@ -39,15 +39,15 @@
     </script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var socket = io.connect();
+      let socket = io.connect();
       socket.on('color change', (entityId, color) => {
         if (entityId === 'all') {
-          var entities = document.querySelectorAll('[cursor-listener]');
+          let entities = document.querySelectorAll('[cursor-listener]');
           for (let entity of entities) {
             entity.setAttribute('material', 'color', '#' + color);
           }
         } else {
-          var entity = document.querySelector(`#${entityId}`);
+          let entity = document.querySelector(`#${entityId}`);
           if (entity) {
             entity.setAttribute('material', 'color', '#' + color);
           } else {
@@ -57,24 +57,72 @@
       });
 
       socket.on('size change', (entityId, sizes) => {
-        var entity = document.querySelector(`#${entityId}`);
+        let entity = document.querySelector(`#${entityId}`);
         if (entity) {
-          if (sizes.height) { entity.setAttribute('geometry', 'height', sizes.height); }
-          if (sizes.width)  { entity.setAttribute('geometry', 'width',  sizes.width ); }
-          if (sizes.depth)  { entity.setAttribute('geometry', 'depth',  sizes.depth ); }
-          if (sizes.radius) { entity.setAttribute('geometry', 'radius', sizes.radius); }
+          if (sizes.all === "+") {
+            sizes.height = "+";
+            sizes.width = "+";
+            sizes.depth = "+";
+            sizes.radius = "+";
+          }
+          if (sizes.all === "-") {
+            sizes.height = "-";
+            sizes.width = "-";
+            sizes.depth = "-";
+            sizes.radius = "-";
+          }
+          if (sizes.height) { 
+            if (sizes.height === "+") {
+              let currentSize = parseInt(entity.getAttribute('geometry', 'height'));
+              sizes.height = currentSize + 0.5;
+            } else if (sizes.height === "-") {
+              let currentSize = parseInt(entity.getAttribute('geometry', 'height'));
+              sizes.height = currentSize - 0.5;
+            }
+            entity.setAttribute('geometry', 'height', sizes.height);
+          }
+          if (sizes.width) { 
+            if (sizes.width === "+") {
+              let currentSize = parseInt(entity.getAttribute('geometry', 'width'));
+              sizes.width = currentSize + 0.5;
+            } else if (sizes.width === "-") {
+              let currentSize = parseInt(entity.getAttribute('geometry', 'width'));
+              sizes.width = currentSize - 0.5;
+            }
+            entity.setAttribute('geometry', 'width', sizes.width);
+          }
+          if (sizes.depth) { 
+            if (sizes.depth === "+") {
+              let currentSize = parseInt(entity.getAttribute('geometry', 'depth'));
+              sizes.depth = currentSize + 0.5;
+            } if (sizes.depth === "-") {
+              let currentSize = parseInt(entity.getAttribute('geometry', 'depth'));
+              sizes.depth = currentSize - 0.5;
+            }
+            entity.setAttribute('geometry', 'depth', sizes.depth);
+          }
+          if (sizes.radius) { 
+            if (sizes.radius === "+") {
+              let currentSize = parseInt(entity.getAttribute('geometry', 'radius'));
+              sizes.radius = currentSize + 0.5;
+            } else if (sizes.radius === "-") {
+              let currentSize = parseInt(entity.getAttribute('geometry', 'radius'));
+              sizes.radius = currentSize - 0.5;
+            }
+            entity.setAttribute('geometry', 'radius', sizes.radius);
+          }
         }
       });
 
       socket.on('position change', (entityId, position) => {
-        var entity = document.querySelector(`#${entityId}`);
+        let entity = document.querySelector(`#${entityId}`);
         if (entity) {
           entity.setAttribute('position', position);
         }
       });
 
       socket.on('entity add', (entityData) => {
-        var entity = document.createElement(`a-${entityData.type}`);
+        let entity = document.createElement(`a-${entityData.type}`);
         if (entityData.id) { entity.setAttribute('id', entityData.id); }
         entity.setAttribute('position', entityData.position || '0 0 0');
         if (entityData.cursorListener) { entity.setAttribute('cursor-listener', null); }
@@ -112,14 +160,14 @@
     </ar-scene>
     <script>
 
-      var arScene = document.querySelector('ar-scene');
-      var content = document.querySelector('#helloworld');
+      let arScene = document.querySelector('ar-scene');
+      let content = document.querySelector('#helloworld');
 
       // the ar-camera has an argon reference frame attached, so when it gets it's first value,
       // we'll get this event 
       arScene.addEventListener("referenceframe-statuschanged", function () {
-        var camera = document.querySelector('ar-camera');
-        var vec = camera.object3D.getWorldDirection();
+        let camera = document.querySelector('ar-camera');
+        let vec = camera.object3D.getWorldDirection();
         vec.multiplyScalar(-10);
         vec.y -= 1;
         content.setAttribute("position", {x: vec.x, y: vec.y, z: vec.z});
