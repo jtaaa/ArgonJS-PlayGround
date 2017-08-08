@@ -1,27 +1,57 @@
-Welcome to the Glitch BETA
-=========================
+ArgonJS-PlayGround
+==================
 
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
+This is a test environment being developed for the 10th installment of the Teleios Power Hour live series. We will be exploring ArgonJS and A-Frame and interact with a virtual environment using HTTP requests sent by a conversational chatbot.
 
-Glitch is a developer playground that lets you code a real web-app without the slow setup and deployment steps.
+How to Use
+----------
 
-[About Glitch](https://glitch.com/about)
+The project can found on [Glitch](https://glitch.com/) at https://chisel-season.glitch.me/. Because the project uses ArgonJS, to properly view the VR scene you should download the Argon app on your mobile phone and then visit the link above.
 
+The current features and how they are implemented are as follows:
+ * Change an entity's color
+ 
+Send a simple GET request to "/colorchange/_{entityId}_/_{Hex Color}_". For example, to change the color of the original sphere to blue you can visit "https://chisel-season.glitch.me/colorchange/sphere/1523BC"
 
-Your Project
-------------
+ * Change the size of an entity
+ 
+Send a POST request to "/sizechange/_{entityId}_" with the dimensions of the object that are to be updated. For example, to make the original cylinder taller and thinner you can send a POST request to "https://chisel-season.glitch.me/sizechange/cylinder" with the following body:
 
-On the back-end,
-- your app starts at `server.js`
-- add frameworks and packages in `package.json`
-- safely store app secrets in `.env`
+```JSON
+{
+	"sizes": {
+		"height": "2",
+		"radius": "0.25"
+	}
+}
+```
 
-On the front-end,
-- edit `public/client.js`, `public/style.css` and `views/index.html`
-- drag in `assets`, like images or music, to add them to your project
+ * Change the position of an entity
+ 
+Send a POST request to "/positionchange/_{entityId}_" with the new position of the entity as a space separated string of X, Y and Z positional values. For example, to move the original square you can send a POST request to "https://chisel-season.glitch.me/positionchange/square" with the following body:
 
+```JSON
+{
+	"position": "6 0 3"
+}
+```
 
-Made by Fog Creek
------------------
+ * Add an entity
+ 
+Send a POST request to "/addentity" with the entity data that will be used to construct the object. For example, to add a cylinder you can send a POST request to "https://chisel-season.glitch.me/addentitiy" with the following body:
 
-\ ゜o゜)ノ
+```JSON
+{
+	"entityData": {
+		"type": "cylinder",
+		"id": null,
+		"position": "0 3 3",
+		"cursorListener": true,
+		"color": "#EE4496",
+		"sizes": {
+			"height": "1",
+			"radius": "1"
+		}
+	}
+}
+```

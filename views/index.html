@@ -72,41 +72,43 @@
             sizes.radius = "-";
           }
           if (sizes.height) { 
+            console.log(sizes.height);
             if (sizes.height === "+") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'height'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').height);
               sizes.height = currentSize + 0.5;
             } else if (sizes.height === "-") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'height'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').height);
               sizes.height = currentSize - 0.5;
             }
+            console.log(sizes.height);
             entity.setAttribute('geometry', 'height', sizes.height);
           }
           if (sizes.width) { 
             if (sizes.width === "+") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'width'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').width);
               sizes.width = currentSize + 0.5;
             } else if (sizes.width === "-") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'width'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').width);
               sizes.width = currentSize - 0.5;
             }
             entity.setAttribute('geometry', 'width', sizes.width);
           }
           if (sizes.depth) { 
             if (sizes.depth === "+") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'depth'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').depth);
               sizes.depth = currentSize + 0.5;
             } if (sizes.depth === "-") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'depth'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').depth);
               sizes.depth = currentSize - 0.5;
             }
             entity.setAttribute('geometry', 'depth', sizes.depth);
           }
           if (sizes.radius) { 
             if (sizes.radius === "+") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'radius'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').radius);
               sizes.radius = currentSize + 0.5;
             } else if (sizes.radius === "-") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'radius'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').radius);
               sizes.radius = currentSize - 0.5;
             }
             entity.setAttribute('geometry', 'radius', sizes.radius);
