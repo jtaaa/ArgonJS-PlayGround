@@ -72,41 +72,43 @@
             sizes.radius = "-";
           }
           if (sizes.height) { 
+            console.log(sizes.height);
             if (sizes.height === "+") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'height'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').height);
               sizes.height = currentSize + 0.5;
             } else if (sizes.height === "-") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'height'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').height);
               sizes.height = currentSize - 0.5;
             }
+            console.log(sizes.height);
             entity.setAttribute('geometry', 'height', sizes.height);
           }
           if (sizes.width) { 
             if (sizes.width === "+") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'width'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').width);
               sizes.width = currentSize + 0.5;
             } else if (sizes.width === "-") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'width'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').width);
               sizes.width = currentSize - 0.5;
             }
             entity.setAttribute('geometry', 'width', sizes.width);
           }
           if (sizes.depth) { 
             if (sizes.depth === "+") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'depth'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').depth);
               sizes.depth = currentSize + 0.5;
             } if (sizes.depth === "-") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'depth'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').depth);
               sizes.depth = currentSize - 0.5;
             }
             entity.setAttribute('geometry', 'depth', sizes.depth);
           }
           if (sizes.radius) { 
             if (sizes.radius === "+") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'radius'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').radius);
               sizes.radius = currentSize + 0.5;
             } else if (sizes.radius === "-") {
-              let currentSize = parseInt(entity.getAttribute('geometry', 'radius'));
+              let currentSize = parseFloat(entity.getAttribute('geometry').radius);
               sizes.radius = currentSize - 0.5;
             }
             entity.setAttribute('geometry', 'radius', sizes.radius);
@@ -136,6 +138,60 @@
 
         document.querySelector('a-entity').appendChild(entity);
       });
+
+      let stopRequests = [];
+
+      socket.on('spin start', (entityId, axis, speed) => {
+        if (entityId === 'all') {
+          let entities = document.querySelectorAll('[cursor-listener]');
+          for (let entity of entities) {
+            startSpin(entity.id, axis, speed);
+          }
+        } else {
+          startSpin(entityId, axis, speed);
+        }
+      });
+
+      function startSpin(entityId, axis, speed) {
+        axis = axis || 'x';
+        speed = speed || 0.8;
+        let entity = document.querySelector(`#${entityId}`);
+        if (entity) {
+          let endTime = Date.now + 30000;
+          let currentRotation = entity.getAttribute('rotation');
+          console.log(currentRotation);
+
+          let spinAnimation = setInterval(frame, 5);
+          function frame() {
+            if (Date.now >= endTime || stopRequests.find(x => x === entityId)) {
+                clearInterval(spinAnimation);
+            } else {
+              currentRotation = entity.getAttribute('rotation');
+              currentRotation[axis] += speed;
+              entity.setAttribute('rotation', currentRotation);
+            }
+          }
+        }
+      }
+
+      socket.on('spin stop', (entityId) => {
+        if (entityId === 'all') {
+          let entities = document.querySelectorAll('[cursor-listener]');
+          for (let entity of entities) {
+            stopSpin(entity.id);
+          }
+        } else {
+          startSpin(entityId)
+        }
+      });
+
+      function stopSpin(entityId) {
+        stopRequests.push(entityId);
+        setTimeout(function() {
+          stopRequests = stopRequests.filter(x => x !== entityId);
+        }, 1000);
+      }
+
     </script>
   </head>
   <body>
@@ -146,7 +202,7 @@
     <ar-scene>
       <a-entity id="helloworld" position="0 -1 -8">
         <a-sphere id="sphere" position="0 1.25 -1" cursor-listener radius="1.25" color="#EF2D5E" ></a-sphere>
-        <a-box id="square" position="-1 0.5 1" cursor-listener rotation="0 45 0" width="1" height="1" depth="1"  color="#4CC3D9" ></a-box>
+        <a-box id="cube" position="-1 0.5 1" cursor-listener rotation="0 45 0" width="1" height="1" depth="1"  color="#4CC3D9" ></a-box>
         <a-cylinder id="cylinder" position="1 0.75 1" cursor-listener radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
       </a-entity>
 
