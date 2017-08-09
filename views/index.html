@@ -72,7 +72,6 @@
             sizes.radius = "-";
           }
           if (sizes.height) { 
-            console.log(sizes.height);
             if (sizes.height === "+") {
               let currentSize = parseFloat(entity.getAttribute('geometry').height);
               sizes.height = currentSize + 0.5;
@@ -80,7 +79,6 @@
               let currentSize = parseFloat(entity.getAttribute('geometry').height);
               sizes.height = currentSize - 0.5;
             }
-            console.log(sizes.height);
             entity.setAttribute('geometry', 'height', sizes.height);
           }
           if (sizes.width) { 
@@ -181,7 +179,7 @@
             stopSpin(entity.id);
           }
         } else {
-          startSpin(entityId)
+          stopSpin(entityId)
         }
       });
 
