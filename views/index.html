@@ -202,6 +202,68 @@
         }, 1000);
       }
 
+      let bounceStopRequests = [];
+
+      socket.on('bounce start', (entityId, speed) => {
+        if (entityId === 'all') {
+          let entities = document.querySelectorAll('[cursor-listener]');
+          for (let entity of entities) {
+            startBounce(entity.id, speed);
+          }
+        } else {
+          startSpin(entityId, speed);
+        }
+      });
+
+      socket.on('bounce stop', (entityId) => {
+        if (entityId === 'all') {
+          let entities = document.querySelectorAll('[cursor-listener]');
+          for (let entity of entities) {
+            stopBounce(entity.id);
+          }
+        } else {
+          stopBounce(entityId)
+        }
+      });
+
+      function startBounce(entityId, speed) {
+        speed = speed || 0.2;
+        let entity = document.querySelector(`#${entityId}`);
+        if (entity) {
+          let endTime = Date.now + 30000;
+          let initialPosition = entity.getAttribute('position');
+          let currentPosition = initialPosition;
+          let direction = 'up';
+
+          let bounceAnimation = setInterval(frame, 5);
+          function frame() {
+            if (Date.now >= endTime || bounceStopRequests.find(x => x === entityId)) {
+                clearInterval(bounceAnimation);
+            } else {
+              currentPosition = entity.getAttribute('position');
+              if (direction === 'up') {
+                currentPosition.y += speed;
+                if (currentPosition.y > initialPosition.y + 4) {
+                  direction = 'down';
+                }
+              } else {
+                currentPosition.y -= speed;
+                if (currentPosition.y < initialPosition.y) {
+                  direction = 'up';
+                }
+              }
+              entity.setAttribute('position', currentPosition);
+            }
+          }
+        }
+      }
+
+      function stopBounce(entityId) {
+        bounceStopRequests.push(entityId);
+        setTimeout(function() {
+          bounceStopRequests = bounceStopRequests.filter(x => x !== entityId);
+        }, 1000);
+      }
     </script>
   </head>
   <body>
