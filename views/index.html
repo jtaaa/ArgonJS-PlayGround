@@ -118,13 +118,14 @@
         let entity = document.querySelector(`#${entityId}`);
         if (entity) {
           let position = entity.getAttribute('position');
+          console.log(position);
           let dimensions = ['x', 'y', 'z'];
           for (let dimen of dimensions) {
             if (newPos[dimen] === '+') {
-              position[dimen] += 1;
+              position[dimen] = parseFloat(position[dimen]) + 1;
             } else if (newPos[dimen] === '-') {
-              position[dimen] -= 1;
-            } else {
+              position[dimen] = parseFloat(position[dimen]) - 1;
+            } else if (newPos[dimen] !== '=') {
               position[dimen] = newPos[dimen];
             }
           }
