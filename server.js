@@ -52,14 +52,24 @@ app.post('/addentity', (req, res) => {
   res.end('Done!');
 });
 
+app.get('/spin/:entityId/:axis?/:speed?', (req, res) => {
+  io.emit('spin start', req.params.entityId, req.params.axis, parseFloat(req.params.speed));
+  res.end('Spinning!');
+});
+
 app.get('/spin/:entityId/stop', (req, res) => {
   io.emit('spin stop', req.params.entityId);
   res.end('Stopping!');
 });
 
-app.get('/spin/:entityId/:axis?/:speed?', (req, res) => {
-  io.emit('spin start', req.params.entityId, req.params.axis, parseFloat(req.params.speed));
-  res.end('Spinning!');
+app.get('/bounce/:entityId/:speed?', (req, res) => {
+  io.emit('bounce start', req.params.entityId, parseFloat(req.params.speed));
+  res.end('Bouncing!');
+});
+
+app.get('/bounce/:entityId/stop', (req, res) => {
+  io.emit('bounce stop', req.params.entityId);
+  res.end('Stopping!');
 });
 
 app.get('/dreams', function (request, response) {
