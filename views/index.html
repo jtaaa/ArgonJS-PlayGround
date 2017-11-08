@@ -4,8 +4,8 @@
   	<meta name="keywords" content="argon, aframe, augmented reality, web, javascript">
     <meta name="description" content="Hello, World! Argon + A-Frame">
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>    
-    <script src="https://rawgit.com/argonjs/argon/develop/dist/argon.js"></script>
-    <script src="https://rawgit.com/argonjs/argon-aframe/develop/dist/argon-aframe.js"></script>
+    <script src="https://rawgit.com/argonjs/argon/master/dist/argon.js"></script>
+    <script src="https://rawgit.com/argonjs/argon-aframe/master/dist/argon-aframe.js"></script>
     <script src="https://samples-develop.argonjs.io/resources/lib/CSS3DArgonRenderer.js"></script>
     <script src="https://samples-develop.argonjs.io/resources/lib/CSS3DArgonHUD.js"></script>
     <script src="https://aframe.argonjs.io/resources/js/aframe-look-at-component.js"></script>
@@ -227,7 +227,7 @@
       });
 
       function startBounce(entityId, speed) {
-        speed = speed || 0.2;
+        speed = speed || 0.05;
         let entity = document.querySelector(`#${entityId}`);
         if (entity) {
           let endTime = Date.now + 30000;
@@ -264,6 +264,20 @@
           bounceStopRequests = bounceStopRequests.filter(x => x !== entityId);
         }, 1000);
       }
+      
+      socket.on('expand image', () => {
+        let entity = document.querySelector('#TCJImage');
+        let expandAnimation = setInterval(frame, 5);
+        let scale = 30;
+        function frame() {
+          if (scale >= 100) {
+              clearInterval(expandAnimation);
+          } else {
+            scale += 0.5;
+            entity.setAttribute('scale', `${scale} ${scale} ${scale}`);              
+          }
+        }
+      });
     </script>
   </head>
   <body>
@@ -272,10 +286,18 @@
       <div id="mydiv2" class="boxface">WebGL<br>+<br>CSS</div>
     </div>
     <ar-scene>
+      <a-assets>
+        <img crossorigin="anonymous" 
+             id="SmartCitySmartCountry" 
+             src="https://cdn.glitch.com/18cd02ca-638e-4144-af80-5fd356b4999e%2FTCJ-theme-SCSC.png?1502383638349" />
+      </a-assets>
       <a-entity id="helloworld" position="0 -1 -8">
-        <a-sphere id="sphere" position="0 1.25 -1" cursor-listener radius="1.25" color="#EF2D5E" ></a-sphere>
+        <a-sphere id="globe" position="0 1.25 -1" cursor-listener radius="1.25" color="#EF2D5E" ></a-sphere>
         <a-box id="cube" position="-1 0.5 1" cursor-listener rotation="0 45 0" width="1" height="1" depth="1"  color="#4CC3D9" ></a-box>
         <a-cylinder id="cylinder" position="1 0.75 1" cursor-listener radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+        <a-image  material="opacity:1"
+                  position="0 0 -120" scale="30 30 30" id="TCJImage" src="#SmartCitySmartCountry">
+        </a-image>
       </a-entity>
 
       <ar-camera>
